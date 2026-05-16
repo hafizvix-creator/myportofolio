@@ -1,0 +1,18 @@
+{
+  "profile": {
+    "name": "Nama Kamu",
+    "role": "Fullstack Developer"
+  },
+  "projects": [
+    {
+      "title": "E-Commerce App",
+      "tech": "React & Firebase",
+      "desc": "Platform belanja online dengan sistem pembayaran real-time."
+    },
+    {
+      "title": "Smart Garden IoT",
+      "tech": "Arduino & Python",
+      "desc": "Sistem penyiraman otomatis berbasis sensor kelembaban."
+    }
+  ]
+}

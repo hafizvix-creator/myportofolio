@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdul Hafiz Khairi | Home</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
+    <style>
+        /* ===== HOME HERO ENHANCEMENTS ===== */
+        .hero {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: heroFadeUp 1s ease both;
+        }
+
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typing text */
+        #typing-text {
+            font-size: 1.1rem;
+            color: #b3b3b3;
+            min-height: 1.6em;
+            margin-bottom: 0.5rem;
+        }
+
+        #typing-text::after {
+            content: '|';
+            animation: blink 0.7s step-end infinite;
+            color: var(--primary-green);
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Scroll indicator */
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            color: #555;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: scrollBounce 2s ease-in-out infinite;
+        }
+
+        .scroll-hint svg {
+            width: 20px;
+            height: 20px;
+            stroke: #555;
+        }
+
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50%       { transform: translateX(-50%) translateY(6px); }
+        }
+
+        /* Social links */
+        .social-links {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(30, 215, 96, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b3b3b3;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+            box-shadow: 0 0 14px rgba(30, 215, 96, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Profile image ring pulse */
+        .profile-img-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .profile-img-wrap::before,
+        .profile-img-wrap::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 1px solid rgba(30, 215, 96, 0.3);
+            animation: ringPulse 3s ease-out infinite;
+        }
+
+        .profile-img-wrap::after {
+            inset: -16px;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes ringPulse {
+            0%   { opacity: 0.6; transform: scale(1); }
+            100% { opacity: 0;   transform: scale(1.15); }
+        }
+
+        .profile-img {
+            display: block;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page Transition Overlay -->
+    <div id="page-transition">
+        <div class="pt-panel"></div>
+        <div class="pt-panel"></div>
+        <div class="pt-panel"></div>
+        <div class="pt-panel"></div>
+    </div>
+
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <nav>
+        <div class="logo">PORTO<span>FOLIO.</span></div>
+        <ul>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="certificate.html">Certificates</a></li>
+        </ul>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Drawer -->
+    <div id="nav-backdrop" class="nav-backdrop"></div>
+    <div id="nav-drawer" class="nav-drawer">
+        <div class="drawer-logo">BIO<span>DATA.</span></div>
+        <ul>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="certificate.html">Certificates</a></li>
+        </ul>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="profile-img-wrap">
+                <img src="assets/img/profile.jpg" alt="Profile" class="profile-img">
+            </div>
+            <h1>Halo, Saya <span class="highlight">Abdul Hafiz Khairi</span></h1>
+            <p id="typing-text"></p>
+            <a href="projects.html" class="btn">Lihat Karya</a>
+
+            <div class="social-links">
+                <a href="#" title="GitHub">GH</a>
+                <a href="#" title="LinkedIn">in</a>
+                <a href="#" title="Instagram">IG</a>
+            </div>
+        </div>
+
+        <div class="scroll-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+            scroll
+        </div>
+    </section>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

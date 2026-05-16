@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Abdul Hafiz Khairi</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
+    <style>
+        /* ===== PROJECTS PAGE ===== */
+        .projects-page {
+            position: relative;
+            z-index: 1;
+            padding: 120px 8% 80px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .page-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .page-header p {
+            color: #b3b3b3;
+            margin-top: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        .header-underline {
+            display: inline-block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary-green);
+            border-radius: 2px;
+            margin-top: 0.8rem;
+            box-shadow: 0 0 12px var(--primary-green);
+        }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            animation: fadeUp 0.8s 0.1s ease both;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #b3b3b3;
+            padding: 0.45rem 1.2rem;
+            border-radius: 500px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+            color: #000;
+        }
+
+        /* Project grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .project-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        border-color 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            transform: translateY(24px);
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease,
+                        border-color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Glow top-left corner on hover */
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -60px; left: -60px;
+            width: 160px; height: 160px;
+            background: radial-gradient(circle, rgba(30,215,96,0.12) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .project-card:hover::before { opacity: 1; }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(30, 215, 96, 0.4);
+            box-shadow: 0 16px 40px rgba(30, 215, 96, 0.08);
+        }
+
+        /* Card number */
+        .card-num {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: rgba(30, 215, 96, 0.4);
+            margin-bottom: 1rem;
+        }
+
+        .project-card h3 {
+            color: #fff;
+            margin-bottom: 0.8rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .project-card p {
+            color: #888;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            background: rgba(30, 215, 96, 0.08);
+            color: var(--primary-green);
+            padding: 4px 10px;
+            border-radius: 500px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(30, 215, 96, 0.2);
+        }
+
+        .card-links {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .card-link {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--primary-green);
+            border-bottom: 1px solid rgba(30,215,96,0.3);
+            padding-bottom: 1px;
+            transition: border-color 0.3s;
+        }
+
+        .card-link:hover { border-color: var(--primary-green); }
+
+        .card-link.secondary {
+            color: #888;
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .card-link.secondary:hover { color: #fff; border-color: #fff; }
+
+        /* Card hide/show saat filter */
+        .project-card.hidden {
+            display: none;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .page-header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page Transition Overlay -->
+    <div id="page-transition">
+        <div class="pt-panel"></div>
+        <div class="pt-panel"></div>
+        <div class="pt-panel"></div>
+        <div class="pt-panel"></div>
+    </div>
+
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <nav>
+        <div class="logo">PORTO<span>FOLIO.</span></div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html" class="active">Projects</a></li>
+            <li><a href="certificate.html">Certificates</a></li>
+        </ul>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Drawer -->
+    <div id="nav-backdrop" class="nav-backdrop"></div>
+    <div id="nav-drawer" class="nav-drawer">
+        <div class="drawer-logo">BIO<span>DATA.</span></div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html" class="active">Projects</a></li>
+            <li><a href="certificate.html">Certificates</a></li>
+        </ul>
+    </div>
+
+    <main class="projects-page">
+
+        <div class="page-header">
+            <h1>My <span class="highlight">Projects</span></h1>
+            <div class="header-underline"></div>
+            <p>Projects I have worked on.</p>
+        </div>
+
+        <div class="filter-tabs" style="display:none;"></div>
+
+        <div class="project-grid" id="project-container">
+
+            <div class="project-card visible">
+                <div class="card-num">01</div>
+                <h3>Kominfo Office Network Simulation</h3>
+                <p>Designed and simulated a complete office network topology for the Kominfo building using Cisco Packet Tracer, including routing, switching, and IP addressing.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">Cisco Packet Tracer</span>
+                    <span class="tech-tag">Routing</span>
+                    <span class="tech-tag">Switching</span>
+                </div>
+            </div>
+
+            <div class="project-card visible">
+                <div class="card-num">02</div>
+                <h3>Kominfo & Governor's Office Network</h3>
+                <p>Simulated a network connecting the Kominfo office and the Governor's office using Cisco Packet Tracer, implementing inter-VLAN routing and WAN connectivity between both buildings.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">Cisco Packet Tracer</span>
+                    <span class="tech-tag">VLAN</span>
+                    <span class="tech-tag">WAN</span>
+                </div>
+            </div>
+
+            <div class="project-card visible">
+                <div class="card-num">03</div>
+                <h3>MikroTik Configuration & Hotspot Setup</h3>
+                <p>Configured a MikroTik router from scratch including firewall rules, bandwidth management, and a fully functional hotspot login portal for user authentication.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">MikroTik</span>
+                    <span class="tech-tag">Hotspot</span>
+                    <span class="tech-tag">Firewall</span>
+                    <span class="tech-tag">RouterOS</span>
+                </div>
+            </div>
+
+            <div class="project-card visible">
+                <div class="card-num">04</div>
+                <h3>LAN Network Installation</h3>
+                <p>Planned and built a Local Area Network (LAN) including physical cabling, crimping, patch panel setup, and network device configuration for a small office environment.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">Network Cabling</span>
+                    <span class="tech-tag">LAN</span>
+                    <span class="tech-tag">Crimping</span>
+                    <span class="tech-tag">Patch Panel</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        // ===== FILTER LOGIC =====
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const allCards   = document.querySelectorAll('.project-card');
+
+        function applyFilter(category) {
+            allCards.forEach(card => {
+                const match = category === 'all' || card.dataset.category === category;
+
+                if (match) {
+                    card.classList.remove('hidden');
+                    // Re-trigger entrance animation
+                    card.classList.remove('visible');
+                    void card.offsetWidth; // reflow
+                    card.classList.add('visible');
+                } else {
+                    card.classList.remove('visible');
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                applyFilter(btn.textContent.trim().toLowerCase());
+            });
+        });
+
+        // ===== ENTRANCE ANIMATION (IntersectionObserver) =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('hidden')) {
+                    const idx = Array.from(allCards).indexOf(entry.target);
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, 80 * idx);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        allCards.forEach(card => observer.observe(card));
+    </script>
+</body>
+</html>

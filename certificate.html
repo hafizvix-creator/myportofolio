@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificates | Abdul Hafiz Khairi</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
+    <style>
+        /* ===== CERTIFICATES PAGE ===== */
+        .cert-page {
+            position: relative;
+            z-index: 1;
+            padding: 120px 8% 80px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .page-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .page-header p {
+            color: #b3b3b3;
+            margin-top: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        .header-underline {
+            display: inline-block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary-green);
+            border-radius: 2px;
+            margin-top: 0.8rem;
+            box-shadow: 0 0 12px var(--primary-green);
+        }
+
+        /* ===== CERT GRID ===== */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ===== CERT CARD ===== */
+        .cert-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 18px;
+            padding: 2.2rem;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cert-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease,
+                        border-color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Corner glow on hover */
+        .cert-card::before {
+            content: '';
+            position: absolute;
+            top: -60px; left: -60px;
+            width: 180px; height: 180px;
+            background: radial-gradient(circle, rgba(30,215,96,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .cert-card:hover::before { opacity: 1; }
+
+        .cert-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(30, 215, 96, 0.4);
+            box-shadow: 0 16px 40px rgba(30, 215, 96, 0.08);
+        }
+
+        /* Card number */
+        .cert-num {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: rgba(30, 215, 96, 0.4);
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        /* Icon badge */
+        .cert-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: rgba(30, 215, 96, 0.08);
+            border: 1px solid rgba(30, 215, 96, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .cert-card h3 {
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 0.6rem;
+        }
+
+        .cert-issuer {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .cert-desc {
+            color: #888;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Tags */
+        .cert-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1.6rem;
+        }
+
+        .cert-tag {
+            background: rgba(30, 215, 96, 0.08);
+            color: var(--primary-green);
+            padding: 4px 10px;
+            border-radius: 500px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(30, 215, 96, 0.2);
+        }
+
+        /* International badge */
+        .cert-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(30, 215, 96, 0.06);
+            border: 1px solid rgba(30, 215, 96, 0.2);
+            color: var(--primary-green);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.3rem 0.8rem;
+            border-radius: 500px;
+        }
+
+        .cert-badge.national {
+            background: rgba(0, 180, 216, 0.06);
+            border-color: rgba(0, 180, 216, 0.25);
+            color: #00b4d8;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .page-header h1 { font-size: 2rem; }
+            .cert-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page Transition Overlay -->
+    <div id="page-transition">
+        <div class="pt-panel"></div>
+        <div class="pt-panel"></div>
+        <div class="pt-panel"></div>
+        <div class="pt-panel"></div>
+    </div>
+
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <nav>
+        <div class="logo">PORTO<span>FOLIO.</span></div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="certificate.html" class="active">Certificates</a></li>
+        </ul>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Drawer -->
+    <div id="nav-backdrop" class="nav-backdrop"></div>
+    <div id="nav-drawer" class="nav-drawer">
+        <div class="drawer-logo">BIO<span>DATA.</span></div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="certificate.html" class="active">Certificates</a></li>
+        </ul>
+    </div>
+
+    <main class="cert-page">
+
+        <div class="page-header">
+            <h1>My <span class="highlight">Certificates</span></h1>
+            <div class="header-underline"></div>
+            <p>Certifications I have earned throughout my learning journey.</p>
+        </div>
+
+        <div class="cert-grid">
+
+            <!-- CERT 1 -->
+            <div class="cert-card">
+                <div class="cert-num">01</div>
+                <div class="cert-icon">🐍</div>
+                <h3>Python Programming Basics</h3>
+                <div class="cert-issuer">Huawei ICT Academy</div>
+                <p class="cert-desc">
+                    Completed the Python Programming Basics course covering fundamental programming
+                    concepts, data structures, and problem-solving using Python.
+                </p>
+                <div class="cert-tags">
+                    <span class="cert-tag">Python</span>
+                    <span class="cert-tag">Programming</span>
+                    <span class="cert-tag">ICT</span>
+                </div>
+                <span class="cert-badge">🌐 International</span>
+            </div>
+
+            <!-- CERT 2 -->
+            <div class="cert-card">
+                <div class="cert-num">02</div>
+                <div class="cert-icon">📡</div>
+                <h3>Junior Technical Support — Wired Telecommunication Activities</h3>
+                <div class="cert-issuer">Badan Nasional Sertifikasi Profesi (BNSP)</div>
+                <p class="cert-desc">
+                    Certified as competent in the field of wired telecommunication activities
+                    with the qualification of Junior Technical Support, issued by the National
+                    Professional Certification Agency of Indonesia.
+                </p>
+                <div class="cert-tags">
+                    <span class="cert-tag">Telecommunication</span>
+                    <span class="cert-tag">Technical Support</span>
+                    <span class="cert-tag">Networking</span>
+                </div>
+                <span class="cert-badge national">🇮🇩 National</span>
+            </div>
+
+            <!-- CERT 3 -->
+            <div class="cert-card">
+                <div class="cert-num">03</div>
+                <div class="cert-icon">🖥️</div>
+                <h3>IT Essentials</h3>
+                <div class="cert-issuer">Cisco Networking Academy</div>
+                <p class="cert-desc">
+                    Completed the IT Essentials course as part of the Cisco Networking Academy program,
+                    covering hardware, software, operating systems, security, and troubleshooting fundamentals.
+                </p>
+                <div class="cert-tags">
+                    <span class="cert-tag">IT Essentials</span>
+                    <span class="cert-tag">Hardware</span>
+                    <span class="cert-tag">Networking</span>
+                    <span class="cert-tag">Cisco</span>
+                </div>
+                <span class="cert-badge">🌐 International</span>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        // Staggered card entrance
+        const cards = document.querySelectorAll('.cert-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const idx = Array.from(cards).indexOf(entry.target);
+                    setTimeout(() => entry.target.classList.add('visible'), 100 * idx);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => observer.observe(card));
+    </script>
+</body>
+</html>
